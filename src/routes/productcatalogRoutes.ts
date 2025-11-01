@@ -9,6 +9,49 @@ import {
 
 
 const router = Router();
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Product:
+ *       type: object
+ *       required:
+ *         - name
+ *         - price
+ *         - category
+ *         - stock
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: Auto-generated ID of the product
+ *         name:
+ *           type: string
+ *           description: Product name
+ *         description:
+ *           type: string
+ *           description: Product description
+ *         price:
+ *           type: number
+ *           description: Product price
+ *         category:
+ *           type: string
+ *           description: Product category
+ *         stock:
+ *           type: number
+ *           description: Available stock quantity
+ *         releaseDate:
+ *           type: string
+ *           format: date-time
+ *           description: Product release date
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ */
+
 router.get("/", getProducts);
 router.post("/", createProduct);
 
