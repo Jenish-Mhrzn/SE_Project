@@ -20,3 +20,14 @@ export const createProductSchema = z.object({
 });
 
 export type CreateProductInput = z.infer<typeof createProductSchema>;
+
+// Update product schema
+
+export const updateProductSchema = z.object({
+  name: z.string().min(1).max(100).optional(),
+  description: z.string().optional(),
+  price: z.number().positive().optional(),
+  category: z.string().min(1).max(50).optional(),
+  stock: z.number().nonnegative().optional(),
+  releaseDate: z.string().datetime().optional(),
+});
