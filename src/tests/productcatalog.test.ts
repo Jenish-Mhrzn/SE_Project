@@ -93,4 +93,69 @@ describe("Products API", () => {
     });
   });
 
+  // ------------------ UPDATE PRODUCT ------------------
+  describe("PUT /api/productcatalog/:id", () => {
+    let productId: string;
+
+    beforeEach(async () => {
+      const product = await Product.create({
+        name: "Old Product",
+        description: "Old Description",
+        price: 500,
+        category: "Electronics",
+        stock: 20,
+      });
+      productId = product._id.toString();
+    });
+
+    it("should update an existing product", async () => {
+      const updateData = { name: "Updated Product", price: 1200 };
+
+      const response = await request(app)
+        .put(`/api/productcatalog/${productId}`) // ✅ Updated path
+        .send(updateData)
+        .expect(200);
+
+      expect(response.body.success).toBe(true);
+      expect(response.body.data.name).toBe(updateData.name);
+      expect(response.body.data.price).toBe(updateData.price);
+
+      const updatedProduct = await Product.findById(productId);
+      expect(updatedProduct?.name).toBe(updateData.name);
+      expect(updatedProduct?.price).toBe(updateData.price);
+    });
+
+    it("should return 404 if product does not exist", async () => {
+      const fakeId = "507f1f77bcf86cd799439011";
+
+      const response = await request(app)
+        .put(`/api/productcatalog/${fakeId}`)
+        .send({ name: "Doesn't exist" })
+        .expect(404);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.message).toBe("Product not found");
+    });
+
+    it("should return 400 for invalid product ID", async () => {
+      const response = await request(app)
+        .put(`/api/productcatalog/invalid-id`)
+        .send({ name: "New Name" })
+        .expect(400);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.message).toBe("Invalid parameters");
+    });
+
+    it("should return validation error for invalid data", async () => {
+      const response = await request(app)
+        .put(`/api/productcatalog/${productId}`)
+        .send({ name: "" }) //  invalid due to .min(1)
+        .expect(400);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.message).toBe("Validation error");
+    });
+  });
+
 });
