@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import { Product } from "../models/ProductCatalog";
 
 import {
-  CreateProductInput
+  CreateProductInput,
+  UpdateProductInput,
 }from "../schemas/productcatalogSchemas";
 
 // Get all products
@@ -56,4 +57,43 @@ export const createProduct = async (
     });
   }
 };
-  
+ // Update a product
+export const updateProduct = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const updateData: UpdateProductInput = req.body;
+
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      {
+        ...updateData,
+        releaseDate: updateData.releaseDate
+          ? new Date(updateData.releaseDate)
+          : undefined,
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!product) {
+      res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Product updated successfully",
+      data: product,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error updating product",
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+}; 
