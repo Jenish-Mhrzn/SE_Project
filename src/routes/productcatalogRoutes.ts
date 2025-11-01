@@ -143,8 +143,7 @@ router.put(
  *       404:
  *         description: Product not found
  */
-router.delete("/:id", deleteProduct);
-
+router.delete("/:id", validateParams(productParamsSchema), deleteProduct);
 /**
  * @swagger
  * /api/productcatalog/{id}:
