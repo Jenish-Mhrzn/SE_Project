@@ -58,4 +58,39 @@ describe("Products API", () => {
     });
   });
 
+  // ------------------ CREATE PRODUCT ------------------
+  describe("POST /api/productcatalog", () => {
+    it("should create a new product", async () => {
+      const productData = {
+        name: "iPhone 15 Pro",
+        description: "Latest Apple iPhone",
+        price: 1500,
+        category: "Electronics",
+        stock: 50,
+      };
+
+      const response = await request(app)
+        .post("/api/productcatalog") // ✅ Updated path
+        .send(productData)
+        .expect(201);
+
+      expect(response.body.success).toBe(true);
+      expect(response.body.data.name).toBe(productData.name);
+      expect(response.body.data.description).toBe(productData.description);
+      expect(response.body.data.price).toBe(productData.price);
+      expect(response.body.data.category).toBe(productData.category);
+      expect(response.body.data.stock).toBe(productData.stock);
+    });
+
+    it("should return 400 if required fields are missing", async () => {
+      const response = await request(app)
+        .post("/api/productcatalog")
+        .send({}) // missing required fields
+        .expect(400);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.message).toBe("Validation error");
+    });
+  });
+
 });
