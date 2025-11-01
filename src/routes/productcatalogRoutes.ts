@@ -7,4 +7,10 @@ import {
   getProductById,
 } from "../controllers/productcatalogController";
 
+
 router.post("/", createProduct);
+
+router.put(
+  "/:id",
+  updateProduct
+);
