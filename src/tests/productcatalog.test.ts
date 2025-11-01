@@ -50,7 +50,7 @@ describe("Products API", () => {
 
     it("should get all products", async () => {
       const response = await request(app)
-        .get("/api/productcatalog") // ✅ Updated path
+        .get("/api/productcatalog") 
         .expect(200);
 
       expect(response.body.success).toBe(true);
@@ -70,7 +70,7 @@ describe("Products API", () => {
       };
 
       const response = await request(app)
-        .post("/api/productcatalog") // ✅ Updated path
+        .post("/api/productcatalog") 
         .send(productData)
         .expect(201);
 
@@ -112,7 +112,7 @@ describe("Products API", () => {
       const updateData = { name: "Updated Product", price: 1200 };
 
       const response = await request(app)
-        .put(`/api/productcatalog/${productId}`) // ✅ Updated path
+        .put(`/api/productcatalog/${productId}`) 
         .send(updateData)
         .expect(200);
 
@@ -157,5 +157,52 @@ describe("Products API", () => {
       expect(response.body.message).toBe("Validation error");
     });
   });
+// ------------------ DELETE PRODUCT ------------------
+  describe("DELETE /api/productcatalog/:id", () => {
+    let productId: string;
 
+    beforeEach(async () => {
+      const product = await Product.create({
+        name: "Product to delete",
+        description: "This will be deleted",
+        price: 999,
+        category: "Gadgets",
+        stock: 10,
+      });
+
+      productId = product._id.toString();
+    });
+
+    it("should delete an existing product", async () => {
+      const response = await request(app)
+        .delete(`/api/productcatalog/${productId}`) // Updated path
+        .expect(200);
+
+      expect(response.body.success).toBe(true);
+      expect(response.body.message).toBe("Product deleted successfully");
+
+      const deletedProduct = await Product.findById(productId);
+      expect(deletedProduct).toBeNull();
+    });
+
+    it("should return 404 for non-existent product", async () => {
+      const fakeId = "507f1f77bcf86cd799439011";
+      const response = await request(app)
+        .delete(`/api/productcatalog/${fakeId}`)
+        .expect(404);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.message).toBe("Product not found");
+    });
+
+    it("should return 400 for invalid product ID", async () => {
+      const response = await request(app)
+        .delete(`/api/productcatalog/invalid-id`)
+        .expect(400);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.message).toBe("Invalid parameters");
+    });
+  });
+  
 });
