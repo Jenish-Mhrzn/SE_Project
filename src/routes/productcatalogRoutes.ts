@@ -7,4 +7,12 @@ import {
   getProductById,
 } from "../controllers/productcatalogController";
 
+const router = Router();
+router.get("/", getProducts);
+​
+
+
+
+
+
 router.post("/", createProduct);
