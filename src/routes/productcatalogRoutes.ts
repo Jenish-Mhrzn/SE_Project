@@ -6,7 +6,12 @@ import {
   deleteProduct,
   getProductById,
 } from "../controllers/productcatalogController";
-
+import { validateBody, validateParams } from "../middleware/validation";
+import {
+  createProductSchema,
+  updateProductSchema,
+  productParamsSchema,
+} from "../schemas/productcatalogSchemas";
 
 const router = Router();
 
@@ -114,9 +119,10 @@ router.post("/", createProduct);
  */
 router.put(
   "/:id",
+  validateParams(productParamsSchema),
+  validateBody(updateProductSchema),
   updateProduct
 );
-
 
 /**
  * @swagger
