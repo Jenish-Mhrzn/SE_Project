@@ -9,10 +9,7 @@ import {
 
 
 const router = Router();
-
 router.post("/", createProduct);
-
-
 router.put(
   "/:id",
   updateProduct
