@@ -31,6 +31,4 @@ export const updateProductSchema = z.object({
   stock: z.number().nonnegative().optional(),
   releaseDate: z.string().datetime().optional(),
 });
-
-// Types
 export type UpdateProductInput = z.infer<typeof updateProductSchema>;
