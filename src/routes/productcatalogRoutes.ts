@@ -85,7 +85,7 @@ router.get("/", getProducts);
  *       201:
  *         description: Product created successfully
  */
-router.post("/", createProduct);
+router.post("/", validateBody(createProductSchema), createProduct); 
 
 
 /**
