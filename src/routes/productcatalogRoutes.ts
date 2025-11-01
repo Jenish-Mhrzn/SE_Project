@@ -20,6 +20,7 @@ router.put(
 
 router.delete("/:id", deleteProduct);
 
+router.get("/:id", getProductById);
 
 export default router;
 
