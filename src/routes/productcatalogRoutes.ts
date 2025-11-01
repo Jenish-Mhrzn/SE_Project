@@ -53,6 +53,23 @@ const router = Router();
  */
 
 router.get("/", getProducts);
+
+/**
+ * @swagger
+ * /api/productcatalog:
+ *   post:
+ *     summary: Create a new product
+ *     tags: [Products]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Product'
+ *     responses:
+ *       201:
+ *         description: Product created successfully
+ */
 router.post("/", createProduct);
 
 router.put(
