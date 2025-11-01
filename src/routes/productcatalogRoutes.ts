@@ -18,4 +18,11 @@ router.put(
 );
 
 
+router.delete("/:id", deleteProduct);
+
+
+export default router;
+
+
+
 
