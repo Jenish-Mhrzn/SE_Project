@@ -52,6 +52,16 @@ const router = Router();
  *           format: date-time
  */
 
+/**
+ * @swagger
+ * /api/productcatalog:
+ *   get:
+ *     summary: Get all products
+ *     tags: [Products]
+ *     responses:
+ *       200:
+ *         description: List of products
+ */
 router.get("/", getProducts);
 
 /**
