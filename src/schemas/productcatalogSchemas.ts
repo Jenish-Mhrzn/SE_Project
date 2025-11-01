@@ -32,5 +32,10 @@ export const updateProductSchema = z.object({
   releaseDate: z.string().datetime().optional(),
 });
 
+// Product params schema for validating :id in routes
+export const productParamsSchema = z.object({
+  id: z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid product ID format"),
+});
 // Types
 export type UpdateProductInput = z.infer<typeof updateProductSchema>;
+export type ProductParams = z.infer<typeof productParamsSchema>;
