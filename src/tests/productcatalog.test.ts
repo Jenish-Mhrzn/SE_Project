@@ -204,5 +204,43 @@ describe("Products API", () => {
       expect(response.body.message).toBe("Invalid parameters");
     });
   });
+   // ------------------ GET PRODUCT BY ID ------------------
+describe("GET /api/productcatalog/:id", () => {
+  let productId: string;
+
+  beforeEach(async () => {
+    const product = await Product.create({
+      name: "Product to fetch",
+      description: "This will be fetched",
+      price: 500,
+      category: "Gadgets",
+      stock: 20,
+    });
+
+    productId = product._id.toString();
+  });
+
+  it("should fetch an existing product by ID", async () => {
+    const response = await request(app)
+      .get(`/api/productcatalog/${productId}`)
+      .expect(200);
+
+    expect(response.body.success).toBe(true);
+    expect(response.body.data._id).toBe(productId);
+    expect(response.body.data.name).toBe("Product to fetch");
+  });
+
+  it("should return 404 if product not found", async () => {
+    const fakeId = new mongoose.Types.ObjectId();
+
+    const response = await request(app)
+      .get(`/api/productcatalog/${fakeId}`)
+      .expect(404);
+
+    expect(response.body.success).toBe(false);
+    expect(response.body.message).toBe("Product not found");
+  });
+
+});
   
 });
